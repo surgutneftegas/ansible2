@@ -1,0 +1,34 @@
+---
+- name: playbook1
+  hosts: server1
+  user: ansible
+  become: yes
+  become_method: sudo
+  become_user: root
+
+  tasks:
+    - name: Create user (name(Bob, alice, carol), email, home directory, pass vault)
+      user:
+        name: "{{ item.username }}"
+        home: "{{ item.homedir }}"
+        comment: "{{ item.comment }}"
+        shell: "{{ item.shell }}"
+        password: "{{ item.password }}"
+        state: present
+      loop:
+        - username: Bob
+          homedir: /home/Bob
+          shell: /bin/bash
+          comment: bob@example.com
+          password: bob 
+        - username: Alica
+          homedir: /home/Alica
+          shell: /bin/bash
+          comment: alica@example.com
+          password: Alica
+        - username: Carol
+          homedir: /home/Carol
+          shell: /bin/bash
+          comment: carol@example.com
+          password: Carol 
+
