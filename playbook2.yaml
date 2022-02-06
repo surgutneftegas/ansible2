@@ -1,11 +1,11 @@
 ---
-- name: playbook1
+- name: playbook2
   hosts: server1
   user: ansible
   become: yes
   become_method: sudo
   become_user: root
-  vars_file:
+  vars_files:
     - vars/users
 
   tasks:
@@ -14,6 +14,6 @@
         name: "{{ item.value.username }}"
         home: "{{ item.value.homedir }}"
         comment: "{{ item.value.comment }}"
-        password: "{{ item.value.password }}"
+        password: "{{ item.value.password | password_hash('sha512') }}"
         state: present
       with_dict: "{{ users }}"
